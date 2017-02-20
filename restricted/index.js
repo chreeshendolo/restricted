@@ -9,21 +9,69 @@ c.height = 480;
 document.body.appendChild( c );
 
 
+var levels = {
+	0: function() {
+		tileMap = [
+			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1],
+			[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+			[1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+		];
+		entity.clear();
+		entity.spawn( { type: 0, col: 2, row: 1 } );
+		entity.spawn( { type: 1, col: 4, row: 1 } );
+	},
+	1: function() {
+		tileMap = [
+			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1],
+			[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+			[1,1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+		];
+		entity.clear();
+		entity.spawn( { type: 0, col: 1, row: 1 } );
+		entity.spawn( { type: 1, col: 4, row: 1 } );
+	},
+
+};
+
 var tileMap = [
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-	[1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1],
+	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1],
+	[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+	[1,1,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,1,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,1],
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ]
 
@@ -77,6 +125,12 @@ entity.spawn = function( obj ) {
 	entity.active.push( obj );
 }
 
+entity.clear = function() {
+	for( var i = this.active.length - 1; i >= 0; --i ) {
+		var ent = this.active[ i ];
+		ent.cleanup = true;
+	}
+}
 
 entity.tileCheck = function( obj ) {
 	var ent = obj.ent,
@@ -101,7 +155,13 @@ var tileResponse = {
 		
 	},
 	2: function( obj ) {
-		if ( obj.ent.key ) tileMap[ obj.tile.row ][ obj.tile.col ] = 0;
+		if ( obj.ent.key ) { 
+			tileMap[ obj.tile.row ][ obj.tile.col ] = 0;
+			obj.ent.key = false;
+		}
+	},
+	3: function( obj ) {
+		levels[ 1 ]();
 	}
 }
 
@@ -138,6 +198,7 @@ var tiles = [
 	{ w: 32, h: 32, color: "rgb( 60, 60, 60 )" },
 	{ w: 32, h: 32, color: "grey" },
 	{ w: 32, h: 32, color: "brown" },
+	{ w: 32, h: 32, color: "red" },
 ]
 
 var entities = [
@@ -145,8 +206,7 @@ var entities = [
 	{ w: 16, h: 16, color: "yellow", input: false, walkable: true },
 ]
 
-entity.spawn( { type: 0, col: 10, row: 10 } );
-entity.spawn( { type: 1, col: 4, row: 1 } );
+levels[ 0 ]();
 
 var game = {};
 game.time = {
@@ -209,89 +269,6 @@ game.loop = function( t ) {
 		var ent = entity.active[ i ],
 			entData = entities[ ent.type ];
 		if ( entData.player ) player = ent;
-	}
-	
-	var vision = 3,
-		col = player.col,
-		row = player.row,
-		newSeen = [];
-	newSeen.push( { col: col, row: row } );
-	
-	
-	
-	
-	var los = {
-		l: true,
-		r: true,
-		u: true,
-		d: true,
-		dr: true
-	}
-	var fill = vision;
-	for ( var i = 0; i < vision; ++i ) {
-		var l = { col: col - i, row: row };
-		l.value = getTileValue( l );
-		
-		//if ( los.l ) newSeen.push( l );
-		if ( l.value != 0 ) los.l = false;
-		
-		var r = { col: col + i, row: row };
-		r.value = getTileValue( r );
-		
-		//if ( los.r ) newSeen.push( r );
-		if ( r.value != 0 ) los.r = false;
-		
-		var u = { col: col, row: row - i };
-		u.value = getTileValue( u );
-		
-		//if ( los.u ) newSeen.push( u );
-		if ( u.value != 0 ) los.u = false;
-		
-		var d = { col: col, row: row + i };
-		d.value = getTileValue( d );
-		
-		//if ( los.d ) newSeen.push( d );
-		if ( d.value != 0 ) los.d = false;
-		
-		for( var j = 0; j < fill; ++j ) {
-			var dr = { col: col + i , row: row + j };
-			dr.value = getTileValue( dr );
-			
-			if ( los.dr ) newSeen.push( dr );
-			if ( dr.value != 0 ) los.dr = false;
-
-		}
-		
-		--fill;
-	}
-	
-	for ( var i = seen.length - 1; i >= 0; --i ) {
-		var oldSeen = seen[ i ];
-		for ( var j = newSeen.length - 1; j >= 0; --j ) {
-			var ns = newSeen[ j ];
-			if ( ns.col == oldSeen.col && ns.row == oldSeen.row ) {
-				newSeen.splice( j, 1 );
-			}
-		}
-	}
-
-	for ( var i = newSeen.length - 1; i >= 0; --i ) {
-		var ns = newSeen[ i ];
-		seen.push( ns );
-	}
-		
-	for ( var i = tileMap.length - 1; i >= 0; --i ) {
-		for ( var j = tileMap[ i ].length - 1; j >= 0; --j ) {
-			var tile = tiles[ tileMap[ i ][ j ] ],
-				alpha = 1;
-			for ( var k = seen.length - 1; k >= 0; --k ) {
-				var sn = seen[ k ];
-				if ( sn.col == j && sn.row == i ) alpha = 0;
-			}
-			
-			ctx.fillStyle = "rgba( 0, 0, 0, " + alpha + " )";
-			ctx.fillRect( j * tile.w, i * tile.h, tile.w, tile.h );
-		}
 	}
 			
 
