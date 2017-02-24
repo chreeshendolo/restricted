@@ -26,10 +26,10 @@ render.update = function() {
 		
 		if ( rndr.sprite ) ctx.drawImage( rndr.sprite, rndr.sx, rndr.sy, rndr.sw, rndr.sh, -rwh, -rhh, rndr.w, rndr.h );
 		
-		// if ( rndr.color ) {
-			// ctx.fillStyle = rndr.color;
-			// ctx.fillRect( rndr.x, rndr.y, rndr.w, rndr.h );
-		// }
+		if ( rndr.color ) {
+			ctx.fillStyle = rndr.color;
+			ctx.fillRect( rndr.x, rndr.y, rndr.w, rndr.h );
+		}
 		
 		ctx.restore();
 		
