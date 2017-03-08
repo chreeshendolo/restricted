@@ -7,7 +7,8 @@ var level = {
 level.add = function( obj ) {
 	this.scene[ obj.map ] = {
 		fresh: obj.fresh,
-		stale: []
+		stale: [],
+		seen: []
 	}
 }
 
@@ -33,8 +34,10 @@ level.persist = function( obj ) {
 
 	entity.crawl( { 
 		callback: function( obj ) {
-			lvl.stale.push( helper.copyObj( obj ) );
-			obj.cleanup = true;
+			if ( obj.control != "input" ) {
+				lvl.stale.push( helper.copyObj( obj ) );
+				obj.cleanup = true;
+			}
 		}	
 	} );
 }

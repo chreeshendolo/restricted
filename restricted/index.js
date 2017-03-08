@@ -63,11 +63,14 @@ atlas.add( { name: "wallInDownRight", sprite: "tiles", x: 96, y: 96, w: 32, h: 3
 
 
 atlas.add( { name: "hero", sprite: "entities", x: 0, y: 0, w: 16, h: 16 } );
+atlas.add( { name: "heroR", sprite: "entities", x: 0, y: 16, w: 16, h: 16 } );
+atlas.add( { name: "heroU", sprite: "entities", x: 0, y: 32, w: 16, h: 16 } );
+
 atlas.add( { name: "friend", sprite: "entities", x: 48, y: 0, w: 16, h: 16 } );
 atlas.add( { name: "key", sprite: "entities", x: 16, y: 0, w: 16, h: 16 } );
-atlas.add( { name: "enemy", sprite: "entities", x: 32, y: 0, w: 16, h: 16 } );
-atlas.add( { name: "enemyU", sprite: "entities", x: 32, y: 16, w: 16, h: 16 } );
-atlas.add( { name: "enemyR", sprite: "entities", x: 32, y: 32, w: 16, h: 16 } );
+atlas.add( { name: "enemy", sprite: "entities", x: 32, y: 0, w: 16, h: 22 } );
+// atlas.add( { name: "enemyU", sprite: "entities", x: 32, y: 16, w: 16, h: 16 } );
+// atlas.add( { name: "enemyR", sprite: "entities", x: 32, y: 32, w: 16, h: 16 } );
 
 
 atlas.add( { name: "barsDownLeftEdge", sprite: "objects", x: 0, y: 0, w: 32, h: 32 } );
@@ -325,7 +328,8 @@ entity.addResponse( {
 		if ( level.scene[ target.map ] ) {
 			level.persist( { map: tile.current } );
 			level.spawn( { map: target.map } );
-			ent = entity.getEnt( { control: "input" } );
+			
+			//ent = entity.getEnt( { control: "input" } );
 			ent.col = target.sc;
 			ent.row = target.sr;
 		}
@@ -370,9 +374,9 @@ entity.addResponse( {
 level.add({
 	map: '0',
 	fresh: function() {
-		entity.addEnt( { atlas: "hero", col: 3, row: 7, control: "input" } );
+		entity.addEnt( { atlas: "hero", col: 3, row: 7, control: "input", vision: { type: "cone", value: 2}, asset: { l: "heroR", r: "heroR", u: "heroU", d: "hero" } } );
 		entity.addEnt( { response: "swap", atlas: "friend", col: 4, row: 2 } );
-		entity.addEnt( { response: "fight", atlas: "enemy", col: 2, row: 7 } );
+		entity.addEnt( { response: "fight", atlas: "enemy", col: 2, row: 7, vision: { type: "cone", value: 2} } );
 		
 		
 		entity.addEnt( { response: "bump", atlas: "barsDownLeftEdge", col: 2, row: 5 } );
@@ -415,7 +419,7 @@ level.add({
 level.add({
 	map: '1',
 	fresh: function() {
-		entity.addEnt( { atlas: "hero", col: 1, row: 7, control: "input" } );
+		//entity.addEnt( { atlas: "hero", col: 1, row: 7, control: "input" } );
 		entity.addEnt( { atlas: "enemy", col: 8, row: 7, response: "fight", control: "look", sequence: [ 'r', 'r' ,'r', 'l', 'u', 'd' ], current: 0, asset: { l: "enemyR", r: "enemyR", u: "enemyU", d: "enemy", } } );
 	}
 })
@@ -483,30 +487,31 @@ game.loop = function( t ) {
 				if ( input.keyState[ 65 ] == "down" ) {
 					target.col = obj.col - 1;
 					target.row = obj.row;
-					change = true;
+					change = "l";
 				}
 					
 				if ( input.keyState[ 68 ] == "down" ) {
 					target.col = obj.col + 1;
 					target.row = obj.row;
-					change = true;
+					change = "r";
 				}
 					
 				if ( input.keyState[ 87 ] == "down" ) {
 					target.col = obj.col;
 					target.row = obj.row - 1;
-					change = true;
+					change = "u";
 				}
 					
 				if ( input.keyState[ 83 ] == "down" ) {
 					target.col = obj.col;
 					target.row = obj.row + 1;
-					change = true;
+					change = "d";
 				}
 				if ( change ) {
+					obj.facing = change;
 					var targetEnt = entity.getEnt( target );
 					if ( targetEnt ) {
-						entity.getResponse( targetEnt.response )( { ent: obj, target: targetEnt } )
+						entity.getResponse( targetEnt.response )( { ent: obj, target: targetEnt } );
 					}
 					else {
 						target.value = tile.getValue( target );
@@ -533,7 +538,7 @@ game.loop = function( t ) {
 						
 					obj.facing = obj.sequence[ obj.current ];
 					obj.current = ( obj.current == sequence.length - 1 ) ? 0 : obj.current + 1;
-					console.log( obj.facing );
+					//console.log( obj.facing );
 				}
 			}
 		}
@@ -547,14 +552,15 @@ game.loop = function( t ) {
 				if ( obj.facing ) {
 					obj.atlas = obj.asset[ obj.facing ]
 					if ( obj.facing == 'l' ) flip = true;
+
 				}
 				var sd = helper.copyObj( atlas.get( obj.atlas ) );
 		
 				sd.sprite = asset.getSprite( sd.sprite );
 				
 				sd.flip = flip || obj.flip;
-
-				render.add( { sprite: sd.sprite, x: obj.col * 32 + ( 32 - sd.w ) * .5, y: obj.row * 32 + ( 32 - sd.h ) * .5, w: sd.w, h: sd.h, sx: sd.x, sy: sd.y, sw: sd.w, sh: sd.w, flip: sd.flip, rotate: obj.rotate } );
+				
+				render.add( { sprite: sd.sprite, x: obj.col * 32 + ( 32 - sd.w ) * .5, y: obj.row * 32 + ( 32 - sd.h ) * .5, w: sd.w, h: sd.h, sx: sd.x, sy: sd.y, sw: sd.w, sh: sd.h, flip: sd.flip, rotate: obj.rotate } );
 			}
 		}
 	} );	
@@ -575,12 +581,13 @@ game.loop = function( t ) {
 
 	render.update();
 	
+	var seen = level.scene[ tile.current ].seen;
 	tile.crawl( {
 		callback: function( tileObj ) {
 			var alpha = 1;
 			entity.crawl( {
 				callback: function( entObj ) {
-					if ( entObj.control ) {
+					if ( entObj.vision ) {
 						var colDiff = 0,
 							rowDiff = 0;
 						if ( tileObj.col >= entObj.col ) {
@@ -596,27 +603,55 @@ game.loop = function( t ) {
 							rowDiff += entObj.row - tileObj.row;
 						}
 						var totalDiff = colDiff + rowDiff;
-						if ( totalDiff <= 3 ) {
-							if ( totalDiff <= 2 ) alpha = 0;
-							if ( totalDiff == 2 ) alpha = .25;
-							if ( totalDiff == 3 ) alpha = .5;
-							var add = true;
-							for ( var i = seen.length - 1; i >= 0; --i ) {
-								var sn = seen[ i ];
-								if ( sn.col == tileObj.col && sn.row == tileObj.row ) {
-									add = false;
+						
+						if ( entObj.vision.type == "burst" ) {
+							if ( totalDiff <= entObj.vision.value ) {
+								alpha = .6 - ( entObj.vision.value - totalDiff ) / entObj.vision.value;
+								var add = true;
+								for ( var i = seen.length - 1; i >= 0; --i ) {
+									var sn = seen[ i ];
+									if ( sn.col == tileObj.col && sn.row == tileObj.row ) {
+										add = false;
+									}
+								}
+								if ( add ) seen.push( tileObj );
+							}
+							else {
+								for ( var i = seen.length - 1; i >= 0; --i ) {
+									var sn = seen[ i ];
+									if ( sn.col == tileObj.col && sn.row == tileObj.row ) {
+										alpha = .8;
+									}
 								}
 							}
-							if ( add ) seen.push( tileObj );
 						}
-						else {
-							for ( var i = seen.length - 1; i >= 0; --i ) {
-								var sn = seen[ i ];
-								if ( sn.col == tileObj.col && sn.row == tileObj.row ) {
-									alpha = .8;
+						
+						if ( entObj.vision.type == "cone" ) {
+							if ( totalDiff <= entObj.vision.value ) {
+								alpha = .6 - ( entObj.vision.value - totalDiff ) / entObj.vision.value;
+								var add = true;
+								for ( var i = seen.length - 1; i >= 0; --i ) {
+									var sn = seen[ i ];
+									if ( sn.col == tileObj.col && sn.row == tileObj.row ) {
+										add = false;
+									}
+								}
+								if ( add ) seen.push( tileObj );
+							}
+							else {
+								for ( var i = seen.length - 1; i >= 0; --i ) {
+									var sn = seen[ i ];
+									if ( sn.col == tileObj.col && sn.row == tileObj.row ) {
+										alpha = .8;
+									}
 								}
 							}
 						}
+						
+						
+						
+						
+						
 					}
 				}
 			} )
@@ -634,6 +669,6 @@ game.loop = function( t ) {
 	time.last = time.now;
 	requestAnimationFrame( game.loop );
 }
-var seen = [];
+
 
 game.loop( 1 );
